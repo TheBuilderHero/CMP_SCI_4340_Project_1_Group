@@ -2,10 +2,11 @@
 # This is just some random data for testing:
 
 def main():
-    inputDataX = [[1, -1], [1, -4], [1, -5]]
+    inputDataX = [[1, -1], [1, -4], [1, -5], [1, -2]]  # if you add this pair [1, -7]
+    inputDataY = [1, -1, -1, 1]  # and add this class 1 the search for a line will fail.
+
     # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
     # have d + 1)
-    inputDataY = [1, -1, -1]
 
     weights = [1, 1]  # w --> weights could be initialised randomly
     dimension = [0, 1]  # d --> 2d dimension
