@@ -2,13 +2,13 @@
 # This is just some random data for testing:
 
 def main():
-    inputDataX = [7, 1, 2, 4,
-                  5]  # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
+    inputDataX = [[1, -1], [1, -4], [1, -5]]
+    # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
     # have d + 1)
-    inputDataY = [1, -1, -1, 1, 1]
+    inputDataY = [1, -1, -1]
 
-    weights = [1, 1, 1, 1, 1]  # w --> weights could be initialised randomly
-    dimension = [0, 1, 2]  # d --> 2d dimension
+    weights = [1, 1]  # w --> weights could be initialised randomly
+    dimension = [0, 1]  # d --> 2d dimension
 
     for setLimit in range(0, 1000):  # iterates starting from 0 to 1000
         # while there is still a point that is misclassified we continue to iterate. in each iteration we take a weight
@@ -23,17 +23,17 @@ def main():
         print("weights: ", weights)
 
         for loopN in range(0, len(inputDataX)):
-            result = inputDataY[loopN] * calc_dot_product(weights, inputDataX)
+            result = inputDataY[loopN] * calc_dot_product(weights, inputDataX[loopN])
             print("Pass #", loopN)
             # print("info:")
             # print("X: ", inputDataX)
             print("Y= ", inputDataY[loopN])
-            print("Y hat= ", calc_dot_product(weights, inputDataX))
+            print("Y hat= ", calc_dot_product(weights, inputDataX[loopN]))
             print("weights before:", weights)
             # print("Result Sign: ", result)
             if result <= 0:
                 print("Updating weights")
-                weights = update_weight_vector(weights, inputDataX, inputDataY[loopN])
+                weights = update_weight_vector(weights, inputDataX[loopN], inputDataY[loopN])
                 print("weights after:", weights)
                 hasMisclassifiedPoint = True
         # This calculates the dot product of the weights and input data
@@ -75,7 +75,9 @@ def main():
 def calc_dot_product(list1, list2):
     dot_product = 0
     for loop_n in range(0, len(list1)):
-        dot_product += list1[loop_n] * list2[loop_n]
+        # print("first: ", list1[loop_n], "second: ", list2[loop_n])
+        # print(type(list1[loop_n]), type(list2[loop_n]))
+        dot_product = dot_product + list1[loop_n] * list2[loop_n]
     print("Dot Product of ", list1, " and ", list2, " is ", dot_product)
     return dot_product
 
