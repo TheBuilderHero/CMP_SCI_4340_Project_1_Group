@@ -2,14 +2,43 @@
 # This is just some random data for testing:
 
 def main():
-    inputDataX = [[1, -1], [1, -4], [1, -5], [1, -2]]  # if you add this pair [1, -7]
-    inputDataY = [1, -1, -1, 1]  # and add this class 1 the search for a line will fail.
+    # increased dimension to 2d from 1d
+    #inputDataX = [[1, -1, -1], [1, -4, -4], [1, -5, -5], [1, -2, -2]]  # if you add this pair [1, -7, -7]
+    #inputDataY = [1, -1, -1, 1]  # and add this class 1 the search for a line will fail.
+
+    inputDataX = [[1, -1, -1], [1, -4, -4], [1, -5, -5], [1, -2, -2], [1, -1, 3], [1, -5, 7], [1, -2, 0], [1, 4, 2], [1, 5, 1], [1, 3, 0], [1, 5, -5], [1, 2, -10]]
+    inputDataX[0] = [1, -1, -1]
+    inputDataX[1] = [1, -4, -4]
+    inputDataX[2] = [1, -5, -5]
+    inputDataX[3] = [1, -2, -2]
+    inputDataX[4] = [1, -1, 3]
+    inputDataX[5] = [1, -5, 7]
+    inputDataX[6] = [1, -2, 0]
+    inputDataX[7] = [1, 4, 2]
+    inputDataX[8] = [1, 5, 1]
+    inputDataX[9] = [1, 3, 0]
+    inputDataX[10] = [1, 5, -5]
+    inputDataX[11] = [1, 2, -10]
+    inputDataY = [-1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1]
+    inputDataY[0] = -1
+    inputDataY[1] = -1
+    inputDataY[2] = -1
+    inputDataY[3] = -1
+    inputDataY[4] = 1
+    inputDataY[5] = -1
+    inputDataY[6] = -1
+    inputDataY[7] = 1
+    inputDataY[8] = 1
+    inputDataY[9] = 1
+    inputDataY[10] = 1
+    inputDataY[11] = -1
+
 
     # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
     # have d + 1)
 
-    weights = [1, 1]  # w --> weights could be initialised randomly
-    dimension = [0, 1]  # d --> 2d dimension
+    weights = [2, 2, 2]  # w --> weights could be initialised randomly
+    dimension = 2  # d --> 2d dimension
 
     for setLimit in range(0, 1000):  # iterates starting from 0 to 1000
         # while there is still a point that is misclassified we continue to iterate. in each iteration we take a weight
@@ -25,7 +54,7 @@ def main():
 
         for loopN in range(0, len(inputDataX)):
             result = inputDataY[loopN] * calc_dot_product(weights, inputDataX[loopN])
-            print("Pass #", loopN)
+            print("Pass #", loopN, "of loop #", setLimit)
             # print("info:")
             # print("X: ", inputDataX)
             print("Y= ", inputDataY[loopN])
@@ -85,7 +114,7 @@ def calc_dot_product(list1, list2):
 
 def update_weight_vector(vector_in, input_x, in_y):
     temp_list = vector_in
-    stepSize = .01
+    stepSize = .02  # maybe need to adjust this.
     for i, w in enumerate(vector_in):
         temp_list[i] = w + stepSize * input_x[i] * in_y
     return temp_list  # returns the new weights
