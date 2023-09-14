@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import random as rand
 
-#globals:
+# globals:
 pocket_choice_w = []
-best_error = None # init later
+best_error = None  # init later
 number_misclassified_points = 0
 
 
@@ -152,7 +152,7 @@ def main(trainingInputDataPointsVector, yTrueClassVector):
 
     for setLimit in range(0, MAX_ITERATIONS):  # iterates starting from 0 to 1000
         # Note, setLimit variable is the current iteration we are at in the loop.
-        #   (aka, what pass we are on through all the points of data because for each iteration we go over all the points)
+        # (aka, what pass we are on through all the points of data because for each iteration we go over all the points)
 
         # while there is still a point that is misclassified we continue to iterate. in each iteration we take a weight
         # vector w(t) [Note, w() is weights list variable] and pick a point that is currently misclassified
@@ -198,7 +198,7 @@ def main(trainingInputDataPointsVector, yTrueClassVector):
         if not hasMisclassifiedPoint:  # just so the loop ends
             print("FOUND LINE!")
             # dont break to see if we can find a better line.
-            # break  # because we found a line that works for the data.
+            break  # because we found a line that works for the data.
 
         # First initalise the weights (it is always going to be w0*x0 ... wn*xn this is the equation of a line)
         # just add up the new dimensions and then add in the weights
@@ -222,7 +222,7 @@ def main(trainingInputDataPointsVector, yTrueClassVector):
         plotDecisionBoundary(weights, data, yTrueClassVector)
     else:
         print("No solution or first solution but not verified in the very last pass.")
-        print("Best Line had error of ", best_error, "\n Simply meaning that ", best_error*100,
+        print("Best Line had error of ", best_error, "\n Simply meaning that ", best_error * 100,
               "Percent, of the points were misclassified")
 
 
@@ -239,7 +239,7 @@ def calc_dot_product(list1, list2):
 
 def update_weight_vector(currentWeightsVector, dataPointsVector, in_yTrueClass):
     temp_list_weights = currentWeightsVector
-    stepSize = .02  # maybe need to adjust this.
+    stepSize = .2  # maybe need to adjust this.
     # loop through all the weights and update then using the data points and true class by the step size value
     for i, w in enumerate(currentWeightsVector):
         temp_list_weights[i] = w + stepSize * dataPointsVector[i] * in_yTrueClass
@@ -253,6 +253,17 @@ def check_add_pocket(error, weights_vector):
     if error < best_error:  # if the error is better then the best error we update our pocket choice
         best_error = error
         pocket_choice_w = weights_vector  # also known as best weights
+    if error_fn(weights_vector) < error_fn(pocket_choice_w):
+        pocket_choice_w = weights_vector
+
+
+def error_fn(vector_in):
+    total_error = 0
+    for value in vector_in:
+        total_error *= value
+    if total_error < 0:
+        total_error = -1 * total_error
+    return total_error
 
 
 if __name__ == "__main__":
