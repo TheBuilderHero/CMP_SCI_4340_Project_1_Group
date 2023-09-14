@@ -12,6 +12,7 @@ import random as rand
 pocket_choice_w = []
 best_error = None  # init later
 number_misclassified_points = 0
+file_name = open("DataSet.txt", "w")
 
 
 # random numbers: https://www.geeksforgeeks.org/random-numbers-in-python/
@@ -137,8 +138,37 @@ def plotDecisionBoundary(weights, dataPoints, yClass, tittle):
 
 def train_main(trainingInputDataPointsVector, yTrueClassVector):
     print("...RUNNING PLA TRAINING ON DATA...")
+    # print(f"Data: {trainingInputDataPointsVector}")
+    # print(f"Data Classification: {yTrueClassVector}")
+    file_name.write(f"\n<<<Training DATA Set>>>\n")
+    file_name.write(f"Data: [\n")
+    iterC = 1
+    for i, item in enumerate(trainingInputDataPointsVector):
+        if iterC == 7:
+            file_name.write("\n")
+            iterC = 1
+        if i == len(trainingInputDataPointsVector)-1:
+            file_name.write(f"{item}\n]\n")
+        else:
+            file_name.write(f"{item}, ")
+        iterC += 1
+
+    file_name.write(f"Data Classification: [\n")
+    iterC = 1
+    for i, item in enumerate(yTrueClassVector):
+        if iterC == 7:
+            file_name.write("\n")
+            iterC = 1
+        if i == len(yTrueClassVector)-1:
+            file_name.write(f"{item}\n]\n")
+        else:
+            file_name.write(f"{item}, ")
+        iterC += 1
+    file_name.write(f"<<<End of Training DATA Set>>>")
     global best_error
     global number_misclassified_points
+    number_updates = 0
+    number_iterations = 0
     MAX_ITERATIONS = 1000
     best_error = len(trainingInputDataPointsVector)  # this initializes the error to the worst case.
     # print(trainingInputDataPointsVector)
@@ -151,6 +181,7 @@ def train_main(trainingInputDataPointsVector, yTrueClassVector):
     weight3 = rand.randrange(0, RANDOM_NUMBER_MAX_WEIGHTS)
     weights = [weight1, weight2, weight3]  # w --> weights are initialised randomly 0 - 5
     # dont think we need this: dimension = 2  # d --> 2d dimension
+    print(f"Trainings starting weights: [{weight1}, {weight2}, {weight3}]")
 
     for setLimit in range(0, MAX_ITERATIONS):  # iterates starting from 0 to 1000
         # Note, setLimit variable is the current iteration we are at in the loop.
@@ -166,6 +197,7 @@ def train_main(trainingInputDataPointsVector, yTrueClassVector):
         # We need to get the dote product of the weight vector and the input data vector (vector of points).
         hasMisclassifiedPoint = False  # used for knowing when we don't update weights
         number_misclassified_points = 0  # reset number since new loop over data points
+        number_iterations += 1
 
         for loopN in range(0, len(trainingInputDataPointsVector)):
             # print(trainingInputDataPointsVector[loopN])
@@ -180,6 +212,7 @@ def train_main(trainingInputDataPointsVector, yTrueClassVector):
             if result <= 0:
                 # print("Updating weights")
                 weights = update_weight_vector(weights, trainingInputDataPointsVector[loopN], yTrueClassVector[loopN])
+                number_updates += 1
                 # print("weights after:", weights)
                 hasMisclassifiedPoint = True
                 number_misclassified_points += 1  # for each point that is misclassified we update the number of misclassified points
@@ -227,6 +260,8 @@ def train_main(trainingInputDataPointsVector, yTrueClassVector):
         print("No solution or first solution but not verified in the very last pass.")
         print(f"Best Line had error of {best_error}\n Simply meaning that {best_error * 100:.2f} Percent, of the "
               f"points were misclassified")
+    print(f"Total number of updates made in training is {number_updates}.")
+    print(f"Total number of iterations made is {number_iterations}")
 
 
 # calculates teh dot product of two vectors:
@@ -272,6 +307,34 @@ def error_weight_fn(vector_in):
 
 
 def test_main(dataPointsVector, yTrueClassVector):
+    print(f"...RUNNING TEST ON DATA...")
+    # print(f"Data: {dataPointsVector}")
+    # print(f"Data Classification: {yTrueClassVector}")
+    file_name.write(f"\n<<<Testing DATA Set>>>\n")
+    file_name.write(f"Data: [\n")
+    iterC = 1
+    for i, item in enumerate(dataPointsVector):
+        if iterC == 7:
+            file_name.write("\n")
+            iterC = 1
+        if i == len(dataPointsVector)-1:
+            file_name.write(f"{item}\n]\n")
+        else:
+            file_name.write(f"{item}, ")
+        iterC += 1
+
+    file_name.write(f"Data Classification: [\n")
+    iterC = 1
+    for i, item in enumerate(yTrueClassVector):
+        if iterC == 7:
+            file_name.write("\n")
+            iterC = 1
+        if i == len(yTrueClassVector)-1:
+            file_name.write(f"{item}\n]\n")
+        else:
+            file_name.write(f"{item}, ")
+        iterC += 1
+    file_name.write(f"<<<End of Testing DATA Set>>>")
     number_misclassified_points = 0
     # print line
     # print points
@@ -299,3 +362,4 @@ if __name__ == "__main__":
     print("\n")  # separating the different stages of line finding.
     test_data, yClass = createLinear(30)
     test_main(test_data, yClass)
+    print(f"All Data sets used were output to the file {file_name.name}")
