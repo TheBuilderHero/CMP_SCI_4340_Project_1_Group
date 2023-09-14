@@ -18,8 +18,8 @@ number_misclassified_points = 0
 
 
 # creates linearly separable data
-def createLinear():
-    numSamples = 25
+def createLinear(nCount):
+    numSamples = nCount
 
     plusX = np.round(np.random.uniform(0, 5, numSamples), 2)
     plusY = np.round(np.random.uniform(0, 5, numSamples), 2)
@@ -100,7 +100,8 @@ def notLinear():
 
 
 # plots the decision line
-def plotDecisionBoundary(weights, dataPoints, yClass):
+def plotDecisionBoundary(weights, dataPoints, yClass, tittle):
+    # print("input weight: ", weights)  # was used for testing
     # Calculate the slope (m) and y-intercept (b) for the line
     m = -weights[1] / weights[2]
     b = -weights[0] / weights[2]
@@ -124,7 +125,7 @@ def plotDecisionBoundary(weights, dataPoints, yClass):
     # Plot the decision boundary
     plt.plot(xValues, formula, 'r--', label='Decision Boundary')
 
-    plt.title("Linearly separable Test Data with Decision Boundary")
+    plt.title(tittle)
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
     plt.legend(handles=legendLabels)
@@ -134,7 +135,8 @@ def plotDecisionBoundary(weights, dataPoints, yClass):
     plt.show()
 
 
-def main(trainingInputDataPointsVector, yTrueClassVector):
+def train_main(trainingInputDataPointsVector, yTrueClassVector):
+    print("...RUNNING PLA TRAINING ON DATA...")
     global best_error
     global number_misclassified_points
     MAX_ITERATIONS = 1000
@@ -216,14 +218,15 @@ def main(trainingInputDataPointsVector, yTrueClassVector):
 
         # Perceptrons are kinda confusing in textbooks. PLA is usually more than one data input. But in this case we are
         # only using one.
-    print("The weights of a found line or close to the line are: ", weights)
+    print(f"The weights of a found line or close to the line are: [{pocket_choice_w[0]:.2f}, {pocket_choice_w[1]:.2f}, "
+          f"{pocket_choice_w[2]:.2f}]")
     if not hasMisclassifiedPoint:
         print("There is a solution!")
-        plotDecisionBoundary(weights, data, yTrueClassVector)
+        plotDecisionBoundary(pocket_choice_w, data, yTrueClassVector, "Linearly separable Training Data with Decision Boundary")
     else:
         print("No solution or first solution but not verified in the very last pass.")
-        print("Best Line had error of ", best_error, "\n Simply meaning that ", best_error * 100,
-              "Percent, of the points were misclassified")
+        print(f"Best Line had error of {best_error}\n Simply meaning that {best_error * 100:.2f} Percent, of the "
+              f"points were misclassified")
 
 
 # calculates teh dot product of two vectors:
@@ -247,17 +250,19 @@ def update_weight_vector(currentWeightsVector, dataPointsVector, in_yTrueClass):
 
 
 def check_add_pocket(error, weights_vector):
+    # print("UPDATE") # used for testing
     global pocket_choice_w
     global best_error
 
     if error < best_error:  # if the error is better then the best error we update our pocket choice
         best_error = error
         pocket_choice_w = weights_vector  # also known as best weights
-    if error_fn(weights_vector) < error_fn(pocket_choice_w):
-        pocket_choice_w = weights_vector
+    # Not helpful because this PLA only finds the first line that works.
+    # if error_weight_fn(weights_vector) < error_weight_fn(pocket_choice_w):
+    #    pocket_choice_w = weights_vector
 
 
-def error_fn(vector_in):
+def error_weight_fn(vector_in):
     total_error = 0
     for value in vector_in:
         total_error *= value
@@ -266,10 +271,31 @@ def error_fn(vector_in):
     return total_error
 
 
+def test_main(dataPointsVector, yTrueClassVector):
+    number_misclassified_points = 0
+    # print line
+    # print points
+    plotDecisionBoundary(pocket_choice_w, dataPointsVector, yTrueClassVector, "Linearly separable Test Data with Decision Boundary")
+    # print error
+    for i, point in enumerate(dataPointsVector):  # this loop checks if any of the points are on the wrong side of the line.
+        if (calc_dot_product(pocket_choice_w, dataPointsVector[i]) * yTrueClassVector[i]) <= 0:
+            number_misclassified_points += 1
+    error_p = (number_misclassified_points / len(dataPointsVector))
+    print(f"Error for test data: {number_misclassified_points:.2f} in {len(dataPointsVector):.2f} error = {error_p:.2f}")
+    print(f"That is, we have {error_p * 100:.2f} percent of the points are misclassified.")
+    #
+
+
 if __name__ == "__main__":
-    # Test with linearly seperable data, after it finds a line, we will test it on a larger data set
-    data, yClass = createLinear()
-    # print(data)
-    main(data, yClass)
+    # We need to test the non-linear first since we dont want it to mess with our linear data classification testing.
+    # that is we need the training data to run right before the testing or we wont have a good line to test against.
     data, yClass = notLinear()
-    main(data, yClass)
+    train_main(data, yClass)
+    print("\n")  # separating the different stages of line finding.
+    # Test with linearly separable data, after it finds a line, we will test it on a larger data set
+    data, yClass = createLinear(25)
+    # print(data)
+    train_main(data, yClass)
+    print("\n")  # separating the different stages of line finding.
+    test_data, yClass = createLinear(30)
+    test_main(test_data, yClass)
