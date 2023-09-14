@@ -2,24 +2,22 @@
 # This is just some random data for testing:
 
 def main():
-    # increased dimension to 2d from 1d
-    #inputDataX = [[1, -1, -1], [1, -4, -4], [1, -5, -5], [1, -2, -2]]  # if you add this pair [1, -7, -7]
-    #inputDataY = [1, -1, -1, 1]  # and add this class 1 the search for a line will fail.
-
-    inputDataX = [[1, -1, -1], [1, -4, -4], [1, -5, -5], [1, -2, -2], [1, -1, 3], [1, -5, 7], [1, -2, 0], [1, 4, 2], [1, 5, 1], [1, 3, 0], [1, 5, -5], [1, 2, -10]]
-    inputDataX[0] = [1, -1, -1]
-    inputDataX[1] = [1, -4, -4]
-    inputDataX[2] = [1, -5, -5]
-    inputDataX[3] = [1, -2, -2]
-    inputDataX[4] = [1, -1, 3]
-    inputDataX[5] = [1, -5, 7]
-    inputDataX[6] = [1, -2, 0]
-    inputDataX[7] = [1, 4, 2]
-    inputDataX[8] = [1, 5, 1]
-    inputDataX[9] = [1, 3, 0]
-    inputDataX[10] = [1, 5, -5]
-    inputDataX[11] = [1, 2, -10]
-    inputDataY = [-1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1]
+    # Initalize the vecotor to be able to contain all points:
+    trainingInputPointVector = [] #init the vector to empty list
+    trainingInputPointVector.append([1, -1, -1]) #item 0
+    trainingInputPointVector.append([1, -4, -4]) #item 1
+    trainingInputPointVector.append([1, -5, -5]) #item 2
+    trainingInputPointVector.append([1, -2, -2]) #item 3
+    trainingInputPointVector.append([1, -1, 3]) #item 4
+    trainingInputPointVector.append([1, -5, 7]) #item 5
+    trainingInputPointVector.append([1, -2, 0]) #item 6
+    trainingInputPointVector.append([1, 4, 2]) #item 7
+    trainingInputPointVector.append([1, 5, 1]) #item 8
+    trainingInputPointVector.append([1, 3, 0]) #item 9
+    trainingInputPointVector.append([1, 5, -5]) #item 10
+    trainingInputPointVector.append([1, 2, -10]) #item 11
+    #init the vector for
+    inputDataY = []
     inputDataY[0] = -1
     inputDataY[1] = -1
     inputDataY[2] = -1
@@ -49,21 +47,21 @@ def main():
         # We need to get the dote product of the weight vector and the input data vector (vector of points).
         result = 0
         hasMisclassifiedPoint = False  # used for knowing when we don't update weights
-        print("Data: ", inputDataX)
+        print("Data: ", trainingInputPointVector)
         print("weights: ", weights)
 
-        for loopN in range(0, len(inputDataX)):
-            result = inputDataY[loopN] * calc_dot_product(weights, inputDataX[loopN])
+        for loopN in range(0, len(trainingInputPointVector)):
+            result = inputDataY[loopN] * calc_dot_product(weights, trainingInputPointVector[loopN])
             print("Pass #", loopN, "of loop #", setLimit)
             # print("info:")
-            # print("X: ", inputDataX)
+            # print("X: ", trainingInputPointVector)
             print("Y= ", inputDataY[loopN])
-            print("Y hat= ", calc_dot_product(weights, inputDataX[loopN]))
+            print("Y hat= ", calc_dot_product(weights, trainingInputPointVector[loopN]))
             print("weights before:", weights)
             # print("Result Sign: ", result)
             if result <= 0:
                 print("Updating weights")
-                weights = update_weight_vector(weights, inputDataX[loopN], inputDataY[loopN])
+                weights = update_weight_vector(weights, trainingInputPointVector[loopN], inputDataY[loopN])
                 print("weights after:", weights)
                 hasMisclassifiedPoint = True
         # This calculates the dot product of the weights and input data
