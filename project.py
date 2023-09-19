@@ -1,35 +1,38 @@
 # cmp sci 4340
 # This is just some random data for testing:
+import json
+
+trainingInputPointVector = [] #init the vector to empty list
+inputDataY = []
 
 def main():
     # Initalize the vecotor to be able to contain all points:
-    trainingInputPointVector = [] #init the vector to empty list
-    trainingInputPointVector.append([1, -1, -1]) #item 0
-    trainingInputPointVector.append([1, -4, -4]) #item 1
-    trainingInputPointVector.append([1, -5, -5]) #item 2
-    trainingInputPointVector.append([1, -2, -2]) #item 3
-    trainingInputPointVector.append([1, -1, 3]) #item 4
-    trainingInputPointVector.append([1, -5, 7]) #item 5
-    trainingInputPointVector.append([1, -2, 0]) #item 6
-    trainingInputPointVector.append([1, 4, 2]) #item 7
-    trainingInputPointVector.append([1, 5, 1]) #item 8
-    trainingInputPointVector.append([1, 3, 0]) #item 9
-    trainingInputPointVector.append([1, 5, -5]) #item 10
-    trainingInputPointVector.append([1, 2, -10]) #item 11
+    initializeInput()
+    #trainingInputPointVector.append([1, -1, -1]) #item 0
+    #trainingInputPointVector.append([1, -4, -4]) #item 1
+    #trainingInputPointVector.append([1, -5, -5]) #item 2
+    #trainingInputPointVector.append([1, -2, -2]) #item 3
+    #trainingInputPointVector.append([1, -1, 3]) #item 4
+    #trainingInputPointVector.append([1, -5, 7]) #item 5
+    #trainingInputPointVector.append([1, -2, 0]) #item 6
+    #trainingInputPointVector.append([1, 4, 2]) #item 7
+    #trainingInputPointVector.append([1, 5, 1]) #item 8
+    #trainingInputPointVector.append([1, 3, 0]) #item 9
+    #trainingInputPointVector.append([1, 5, -5]) #item 10
+    #t#rainingInputPointVector.append([1, 2, -10]) #item 11
     #init the vector for
-    inputDataY = []
-    inputDataY.append(-1)
-    inputDataY.append(-1)
-    inputDataY.append(-1)
-    inputDataY.append(-1)
-    inputDataY.append(1)
-    inputDataY.append(-1)
-    inputDataY.append(-1)
-    inputDataY.append(1)
-    inputDataY.append(1)
-    inputDataY.append(1)
-    inputDataY.append(1)
-    inputDataY.append(-1)
+    #inputDataY.append(-1)
+    #inputDataY.append(-1)
+    #inputDataY.append(-1)
+    #inputDataY.append(-1)
+    #inputDataY.append(1)
+    #inputDataY.append(-1)
+    #inputDataY.append(-1)
+    #inputDataY.append(1)
+    #inputDataY.append(1)
+    #inputDataY.append(1)
+    #inputDataY.append(1)
+    #inputDataY.append(-1)
 
 
     # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
@@ -117,6 +120,24 @@ def update_weight_vector(vector_in, input_x, in_y):
         temp_list[i] = w + stepSize * input_x[i] * in_y
     return temp_list  # returns the new weights
 
+def initializeInput():
+    #trainingInputPointVector = []
+    #read json file and get input points
+    f = open('input.json')
+
+    # returns JSON object as
+    # a dictionary
+    data = json.load(f)
+
+    for i in data['training_set_linear']['points']:
+        trainingInputPointVector.append(i)
+
+    for i in data['training_set_linear']['labels']:
+        inputDataY.append(i)
+
+    f.close()
+
+    #return trainingInputPointVector
 
 # call main function
 main()
