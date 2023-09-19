@@ -18,18 +18,18 @@ def main():
     trainingInputPointVector.append([1, 2, -10]) #item 11
     #init the vector for
     inputDataY = []
-    inputDataY[0] = -1
-    inputDataY[1] = -1
-    inputDataY[2] = -1
-    inputDataY[3] = -1
-    inputDataY[4] = 1
-    inputDataY[5] = -1
-    inputDataY[6] = -1
-    inputDataY[7] = 1
-    inputDataY[8] = 1
-    inputDataY[9] = 1
-    inputDataY[10] = 1
-    inputDataY[11] = -1
+    inputDataY.append(-1)
+    inputDataY.append(-1)
+    inputDataY.append(-1)
+    inputDataY.append(-1)
+    inputDataY.append(1)
+    inputDataY.append(-1)
+    inputDataY.append(-1)
+    inputDataY.append(1)
+    inputDataY.append(1)
+    inputDataY.append(1)
+    inputDataY.append(1)
+    inputDataY.append(-1)
 
 
     # x --> note, x sub 0 starts at 1 (This is needed because when we bring in the weights we will
