@@ -66,7 +66,9 @@ def main():
                 print("Updating weights")
                 weights = update_weight_vector(weights, trainingInputPointVector[loopN], inputDataY[loopN])
                 print("weights after:", weights)
-                hasMisclassifiedPoint = True
+                hasMisclassifiedPoint &= True
+            else:
+                hasMisclassifiedPoint &= False
         # This calculates the dot product of the weights and input data
         # if result >= 0:
         # not misclassified
@@ -108,7 +110,7 @@ def calc_dot_product(list1, list2):
     for loop_n in range(0, len(list1)):
         # print("first: ", list1[loop_n], "second: ", list2[loop_n])
         # print(type(list1[loop_n]), type(list2[loop_n]))
-        dot_product = dot_product + list1[loop_n] * list2[loop_n]
+        dot_product = dot_product + (list1[loop_n] * list2[loop_n])
     print("Dot Product of ", list1, " and ", list2, " is ", dot_product)
     return dot_product
 
@@ -117,7 +119,7 @@ def update_weight_vector(vector_in, input_x, in_y):
     temp_list = vector_in
     stepSize = .02  # maybe need to adjust this.
     for i, w in enumerate(vector_in):
-        temp_list[i] = w + stepSize * input_x[i] * in_y
+        temp_list[i] = w + (stepSize * input_x[i] * in_y)
     return temp_list  # returns the new weights
 
 def initializeInput():
